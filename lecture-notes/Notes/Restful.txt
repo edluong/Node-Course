@@ -1,0 +1,36 @@
+--Restful services--
+-Client and Server architecture
+-Client is also known as the frontend
+-Server is the backend (gets and saves the data)
+ 
+ 
+-Client will list the number of customers
+-The server will expose an endpoint for example: http://vidly.com/api/customers
+-Client will send http requests
+
+--Breakdown of an api endpoint--
+-http:// or https:// this will depend on the application and the requirements; if you want secure connection then https
+-vidly.com this will be the domain
+-/api/ in a restful service is not compulsory just convention
+-customers this is the known as a resource. exposing customers for this endpoint
+
+--Standard http methods--
+-GET - used to get data
+-POST - to insert data
+-PUT - to update data
+-DELETE - to delete data
+
+--Example: GET CUSTOMERS--
+-Request: GET /api/customers
+-Response: [
+    {id: 1, name: ''},
+    {id: 2, name: ''}
+    ...
+]
+
+--Example: GET CUSTOMER--
+-Request: GET /api/customer/1
+-Response: {id: 1, name: ''}
+
+
+

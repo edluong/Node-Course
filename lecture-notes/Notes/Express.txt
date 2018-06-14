@@ -1,0 +1,21 @@
+--Express Framework-- (the E in MEAN.io stack)
+-Used to get routes then a bunch of if statements-
+
+-Can use another package nodemon (Node Monitor) to not having to refresh listening on port all the time
+
+-need to create a dynamic variable for the port. Because in the real world the port will be assigned by the host environment example: app.listen(3000), 3000 could be a different number
+
+-Can set the environment variable by using the word EXPORT
+-export PORT=5000
+
+--How to check HTTP POST responses--
+-Need the chrome extension POSTMAN
+
+--Input validation made easy using joi (node module)--
+
+
+
+
+
+
+

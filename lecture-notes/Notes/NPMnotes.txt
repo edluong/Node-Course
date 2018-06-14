@@ -1,0 +1,120 @@
+Best Practice when starting a node project.
+always start with NPM init //this will walk you through the package.jason creation process
+NPM init --yes //this will skip the steps and just create the package
+
+NPM -- new version of npm the node_modules will be all kept in the same folder node modules now
+    -- background: because there was issues with Windows having too many characters for a path with the        nested node_modules format
+    -- Exception: if a module is dependent on another version of module. it will have a dependency node_modules folder
+    
+-can get back the node_modules folder by installing them using "npm i" npm will look for package.json then install all of the node_module 
+-should use .gitingnore to exclude the node_module folder
+
+--Semantic Versioning (SemVer)--
+-This is to represent the versions of a Node module the 3 parts 1.0.0 (Major.Minor.Patch)
+Patch -> fixing major bugs
+Minor -> adding new features
+Major -> New feature that will potentially break a version
+^ in front of the SemVer is to notify Node that you are interested in any Major version.
+
+Why is ^ used? If someone checked out our code, it would still be on the same Major version.
+
+Real World Examples
+Example: ^3.0.0 is equivalent to 3.x
+Example: ~1.8.3 would mean someone is interested in any node package that is Major version 1 and Minor version 8 or 1.8.x
+
+--How to find list of installed dependencies?
+
+Ans: npm list
+
+--How to find list of dependencies to my app?
+
+Ans: npm list --depth=0
+
+--How to find metadata of a library (This would usually give you a huge list)?
+
+Ans:npm view (package name) example: npm view mongoose
+
+--How to find only the dependecies of a package?
+Ans:npm view (package name) dependencies example: npm view mongoose dependencies
+
+--How to find versions that a package has been released?
+Ans: npm view (package name) versions example: npm view mongoose versions
+(Why is this useful?) Its usualful if you want to upgrade or downgrade a package
+
+--How to install a specific version?
+Ans: npm i (package name)@x.x.x  example: npm i mongoose@2.4.2
+(use npm list --depth=0) to verify
+
+--How to see which package are updated and the new version existing?
+Ans: npm outdated
+(This will generated a Current/ Wanted/ Latest column)
+
+What is wanted from the three columns and where is it derived?
+Ans: The wanted column will usually tell you the latest Minor release example: current is 2.4.2 and Wanted is 2.9.10.
+
+How to updated packages to the latest release?
+Ans: npm update 
+Note: This will not update to major versions because it might break the code base
+
+How to update to major versions?
+Ans: need different npm package to do this. (npm-check-updates)
+     Using command ncu -u --packageFile package.json (-u = upgrade) 
+     THEN have to run (npm i)
+     Check: npm outdated (no results should show up)
+     
+How to install developer dependencies?
+Ans: npm i (package name) --save-dev example: npm i jshint --save-dev
+Note: These should not go into the production environment; segregated in package.json
+
+How to uninstall a package?
+Ans: npm uninstall (package name) or npm un (package name) example: npm un mongoose
+
+How to install global packages?
+Ans: npm i -g
+
+How to find all outdated global packages?
+Ans: npm -g outdated
+
+How  to uninstall a global package?
+Ans: npm un -g (package name)
+
+How to publish a package on NPM registry?
+Ans: 
+1. check if you have an account. If no, use npm adduser. If yes, npm login
+2. will always be asked three questions. Username, Password, Email.
+3. run npm publish (have to be in the directory of the library)
+
+
+How to update a published package?
+Ans:
+1. Need to update the package of the version. npm version major/minor/patch (this will autoincrement when its ran)
+2. npm publish
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
+
+     
+
+
+
+
+
+
+
+
+
+
+
