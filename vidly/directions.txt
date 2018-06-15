@@ -1,0 +1,9 @@
+vidly (vidly.com/api/genres)
+-imaginary video rental service
+
+
+-endpoint getting a list of genres
+-create a new genre
+-update or delete an existing genre
+
+genres can have "action","horror","comedy"
