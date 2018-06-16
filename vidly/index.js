@@ -1,5 +1,7 @@
 const express = require('express');
+const Joi = require('joi');
 const app = express();
+
 
 app.use('/',express.static('public'))
 app.use('/static',express.static('public'))
@@ -29,6 +31,23 @@ app.get('/api/genres/:id',(req,res) =>{
     //show the genre
     res.send(genre);
 });
+
+//Insert
+app.post('api/genres/:genre',(req,res)=>{
+    //validate that the length of the genre is greater than 3
+    
+    
+
+    //create the genre object
+
+
+    //insert into the vids object
+
+
+    //show the genre inserted
+
+});
+
 
 app.listen(3000, () => console.log('Listening on port 3000...'));
 
