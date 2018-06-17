@@ -61,6 +61,23 @@ app.post('/api/genres/',(req,res)=>{
     //console.log(vids);
 });
 
+app.put('/api/genres/:id',(req,res) =>{
+
+    //validate that the new update will be greater than 3
+    const {error} = validateGenre(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    //look up the genre, send 404 if not found
+    var genreLookup = vids.find(g => g.id === parseInt(req.params.id));
+    if(!genreLookup) return res.status(404).send('Status:404 Genre is not available for the supplied ID.');
+
+    //update the genre
+    genreLookup.genre = req.body.genre; 
+    
+    //send the updated genre to the client
+    res.send(genreLookup);
+});
+
 //delete
 app.delete('/api/genres/:id',(req,res) => {
 
