@@ -2,7 +2,6 @@ const express = require('express');
 const Joi = require('joi');
 const app = express();
 
-
 app.use('/',express.static('public'))
 app.use('/static',express.static('public'))
 
@@ -62,6 +61,20 @@ app.post('/api/genres/',(req,res)=>{
     //console.log(vids);
 });
 
+//delete
+app.delete('/api/genres/:id',(req,res) => {
+
+    //check if the given id is there
+    //if its not found give a status 400
+    const genre = vids.find(g => g.id === parseInt(req.params.id));
+    if (!genre) return res.status(400).send("cannot find supplied ID.");
+
+    //remove genre from the vids array
+    vids.splice(vids.indexOf(genre),1);
+
+    //show the removed genre 
+    res.send(genre);
+});
 
 app.listen(3000, () => console.log('Listening on port 3000...'));
 
