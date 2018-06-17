@@ -1,12 +1,12 @@
 const express = require('express');
 const Joi = require('joi');
-const bodyParser = require('body-parser');
 const app = express();
 
 
 app.use('/',express.static('public'))
 app.use('/static',express.static('public'))
-app.use(bodyParser);
+
+app.use(express.json());
 
 var vids = [
     { id: 1, "genre": "Action" },
@@ -15,10 +15,10 @@ var vids = [
 ];
 
 function validateGenre(genreParam){
-    const schema = Joi.object().keys({
+    const schema ={
         genre: Joi.string().min(3).required()
-    })
-    return Joi.validate({genre: genreParam},schema);
+    }
+    return Joi.validate(genreParam,schema);
 };
 
 app.get('/',(req,res) => {
@@ -44,18 +44,22 @@ app.get('/api/genres/:id',(req,res) =>{
 //Insert
 app.post('/api/genres/',(req,res)=>{
     //validate that the length of the genre is greater than 3
-    //console.log(req.body);
-
-    console.log(validateGenre(req.body.genre));
+    //console.log(req.body.genre);
+    var {error} = validateGenre(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
     
     //create the genre object
-
+    var genre = {
+        id: vids.length + 1,
+        genre: req.body.genre
+    }
 
     //insert into the vids object
-
+    vids.push(genre);
 
     //show the genre inserted
-    res.send(res.body.genre);
+    res.send(genre);
+    //console.log(vids);
 });
 
 
