@@ -1,8 +1,11 @@
 const Joi = require('joi'); //this returns a classf
+const helmet = require('helmet');
+const morgan = require('morgan');
 const logger = require('./logger');
 const auth = require('./auth');
 const express = require('express');
 const app = express(); //by convention we use app to denote an express object
+
 
 
 //app.get() 2 Params: 1st Param is url of the api, callback function
@@ -20,11 +23,14 @@ app.get('/api/courses/:year/:month',(req,res) =>{
 });
 */
 
-//express will not automatically parse objects
-app.use(express.json()); //adding a piece of middleware
+app.use(helmet());
+app.use(morgan('tiny')); //this is middleware to log it in the console; you might only want this to be turned on certain situations
+app.use(express.json()); //adding a piece of middleware //express will not automatically parse objects
 app.use(express.urlencoded({extended:true})); //this will parse incoming url with variable payloads example: key=value&key=value
 app.use(express.static('public')); //this will help serve static files such as html/css/static; note public is not in localhost:3000/readme.txt
 app.use(logger);
+
+
 
 //note middlware functions are called in sequence
 app.use(auth);

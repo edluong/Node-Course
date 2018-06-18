@@ -15,7 +15,13 @@
 
 -An example for app.use(express.urlencoded) is in Postman with the post method. When posting use the form urlencoded option for the Body 
 
-then fill out the Key with "name" and then value will be "new course"
+-then fill out the Key with "name" and then value will be "new course"
+
+--Third party middleware--
+-can find all third party list of middleware on the express documentation
+-*best practice* is to use helmet as a middleware to help secure apps
+
+
 
 
 
