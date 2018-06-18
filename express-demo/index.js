@@ -1,4 +1,6 @@
 const Joi = require('joi'); //this returns a classf
+const logger = require('./logger');
+const auth = require('./auth');
 const express = require('express');
 const app = express(); //by convention we use app to denote an express object
 
@@ -7,11 +9,6 @@ const app = express(); //by convention we use app to denote an express object
 //app.post()
 //app.put()
 //app.get()
-
-app.get('/',(req, res) => {
-    res.send('Hello World');
-}); //This is defining a route and the callback function is the route handler
-
 
 /*app.get('/api/courses/:year/:month',(req,res) =>{
     res.send(req.params);//using params would get all of the params (would be called route parameters)
@@ -25,6 +22,12 @@ app.get('/api/courses/:year/:month',(req,res) =>{
 
 //express will not automatically parse objects
 app.use(express.json()); //adding a piece of middleware
+app.use(express.urlencoded({extended:true})); //this will parse incoming url with variable payloads example: key=value&key=value
+app.use(express.static('public')); //this will help serve static files such as html/css/static; note public is not in localhost:3000/readme.txt
+app.use(logger);
+
+//note middlware functions are called in sequence
+app.use(auth);
 
 
 const courses = [
@@ -42,6 +45,11 @@ function  validateCourse(course){
     
    return Joi.validate(course,schema);
 }       
+
+
+app.get('/',(req, res) => {
+    res.send('Hello World');
+}); //This is defining a route and the callback function is the route handler
 
 //GET route handler that gets all courses
 app.get('/api/courses',(req,res) => {

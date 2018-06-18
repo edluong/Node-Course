@@ -1,0 +1,21 @@
+--Middleware--
+-a middleware function takes a response function and passes it to another middlware function
+
+-an example is a request and then we terminate the *Request Processing Pipeline* with a response
+-another example is to get the req.body and then pass it to the express.json function
+
+-Request Processing Pipeline will have one or more middleware function example: Request -> json() ->route()  -> Response
+
+-express has built in middleware function but we can create custom ones as needed
+
+--built in middleware--
+-app.use(express.json())  //will get the req.body
+
+-app.use(express.urlencoded()); //this will parse incoming url with variable payloads example: key=value&key=value; this the traditional way and not used often
+
+-An example for app.use(express.urlencoded) is in Postman with the post method. When posting use the form urlencoded option for the Body 
+
+then fill out the Key with "name" and then value will be "new course"
+
+
+
