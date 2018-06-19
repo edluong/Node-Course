@@ -1,0 +1,18 @@
+--Debugging--
+-log messages to debug our app
+-should use the node debugger because we do not need to write code to inject into our code
+-use the built in debug package
+-npm i debug (to install)
+
+-export the environment variable DEBUG to toggle which types of messages we want to see
+-export DEBUG=app:startup //we will see all message regarding the app startup
+-export DEBUG=app:* //we will see all message
+-export DEBUG= //toggle to no namespace
+
+-PROs of using debug:
+*it will change the message to different colors than using console.log
+
+-faster way of setting the environment variable
+-example express-demo$ DEBUG=app:db nodemon index.js //this is a shortcut
+
+-in reality we will not need to have multiple functions for debugging; can condense the code

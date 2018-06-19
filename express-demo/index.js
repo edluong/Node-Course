@@ -2,10 +2,18 @@ const Joi = require('joi'); //this returns a classf
 const helmet = require('helmet');
 const morgan = require('morgan');
 const logger = require('./logger');
+const debug = require('debug')('app:startup');//this function returns a namespace
 const auth = require('./auth');
+const config = require('config');
 const express = require('express');
 const app = express(); //by convention we use app to denote an express object
 
+/* console.log(`Node_ENV: ${process.env.NODE_ENV}`);
+console.log(`app: ${app.get('env')}`); //express's way of telling you which environment */
+
+console.log('Application Name: ' + config.get('name'));
+console.log('Mail Server: '+ config.get('mail.host'));
+console.log('Mail password: ' + config.get('mail.password'));
 
 
 //app.get() 2 Params: 1st Param is url of the api, callback function
@@ -24,13 +32,20 @@ app.get('/api/courses/:year/:month',(req,res) =>{
 */
 
 app.use(helmet());
-app.use(morgan('tiny')); //this is middleware to log it in the console; you might only want this to be turned on certain situations
+
+//only run Morgan middlware if the production is development
+if(app.get('env') === 'development'){
+    app.use(morgan('tiny')); //this is middleware to log it in the console; you might only want this to be turned on certain situations
+    debug('Morgan enabled...'); //Prefer the debug statements compared to console.log; gives more power
+}
+
 app.use(express.json()); //adding a piece of middleware //express will not automatically parse objects
 app.use(express.urlencoded({extended:true})); //this will parse incoming url with variable payloads example: key=value&key=value
 app.use(express.static('public')); //this will help serve static files such as html/css/static; note public is not in localhost:3000/readme.txt
 app.use(logger);
 
-
+//DB work...
+dbDebugger('Connected to the database...');
 
 //note middlware functions are called in sequence
 app.use(auth);

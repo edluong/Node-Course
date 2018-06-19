@@ -1,0 +1,16 @@
+--Environments--
+-Need to know which environment it is on
+-process object (node object) can give us the environment variable. process.env.Node_ENV //default: undefinded
+-express has a way of telling you environment by app.get('env')
+-change the process object by doing: export Node_ENV=production
+
+--Managing different Environments--
+-Can use two modules rc(most popular one) or config
+-DO NOT store passwords and then push it onto repos
+-we can deal with not storing passwords by saving them into environment variables
+--To do this 3 easy steps:
+*create an environment variables using export (Appname_password) = (password); this is used to not have clashing of variables
+*create a file in the config folder called custom-environment-variables.json (has to be exactly named)
+*then add in the password by the reference only to the environment variable example: password: 'appname_password'
+
+
