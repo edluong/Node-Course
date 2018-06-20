@@ -1,0 +1,9 @@
+--Templating--
+-Instead of just serving JSON we can serve dynamic HTMl using templating engines such as:
+*Pug
+*Mustache
+*EJS
+
+--can use res.render() to show the html to the screen;example: res.render('index',{title:'My Express App',message: 'Hello'});
+
+--using app.set('view engine', 'pug') to enable pug a templating engine
