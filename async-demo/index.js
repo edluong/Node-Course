@@ -7,6 +7,30 @@
     --async/await
 */
 
+//Async and Await approach
+//when ever we use await in a fuction, we have to decorate the function with async
+//this is syntactic sugar
+//NOTE: there is no .catch() -- we have to use a try-catch block
+async function displayCommits(){
+    try{
+        const user = await getUser(1); //this will convert into Promises in the backend
+    const repos = await getRepositories(user.gitHubUsername);
+    const commits = await getCommits(repos[0]);
+    console.log(commits);
+    }
+    catch (err){
+        console.log('Error', err.message);
+    }
+    
+}
+displayCommits();
+
+
+
+
+
+
+
 
 //Asynchronous
 console.log('Before');
