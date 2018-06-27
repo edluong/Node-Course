@@ -6,11 +6,48 @@ mongoose.connect('mongodb://localhost/playground') //hardcoding the connection s
 
 //create a schema
 const courseSchema = new mongoose.Schema({
-    name: String,
+    name: {
+        type:String, 
+        required: true,
+        minlength: 5,
+        maxlength: 255,
+        //match: /pattern/
+    },
+    category:{
+        type: String,
+        //required: true,
+        enum: ['web','mobile','network','test'],
+        
+        //Extra properties for string type
+        //lowercase: true //converts it automatically to lowercase
+        uppercase: true,
+        trim: true //helps remove any type of padding 
+    },
     author: String,
-    tags: [String],
+    tags: {
+            type: Array,
+            validate:{
+                isAsync: true,
+                validator: function(v,callback){
+                    setTimeout(() =>{
+                      //Do some async work
+                        const result = v && v.length > 0; //the v part is to see if its not null
+                        callback(result);
+                    },4000);
+                },
+                message: 'A course must have at least one tag...'
+            }
+         },
     date: {type: Date, default: Date.now},
-    isPublished: Boolean
+    isPublished: Boolean,
+    price: {
+        type: Number,
+        required: function() {return this.isPublished;}, //conditional required;useful for certain scenarios
+        min: 10,
+        max: 200,
+        get: v => Math.round(v),
+        set: v => Math.round(v)
+    }
 });
 
 //Classes, objects
@@ -23,13 +60,23 @@ async function createCourse(){
 //create an object
 const course = new Course({
     name: 'Angular Course',
+    //category: 'TEST',
     author: 'Ed',
     tags: ['angular','frontend'],
-    isPublished: true
+    isPublished: true,
+    price: 15.8
 });
 
-const result = await course.save(); //async operation
-console.log(result);
+    try{
+        const result = await course.save(); //async operation
+        console.log(result);
+
+        // await course.validate(); does the same thing as the line above
+    }
+    catch(ex){
+        for (field in ex.errors)
+            console.log(ex.errors[field].message);
+    }
 }
 
 
@@ -128,5 +175,63 @@ async function getCourses(){
 
 
 //createCourse();
-getCourses();
+//getCourses();
+
+async function updateCourse(id){ //query first approach
+
+    //Approach: query first
+    //findbyID()
+    //modify its properties
+    //save()
+
+    const course = await Course.findById(id);
+
+    if(!course) return;
+
+    //1st approach
+    course.isPublished = true;
+    course.author = 'Another Author';
+
+    //save the result so we can display it
+    const result = await course.save();
+    console.log(result);
+}
+
+async function updateMethodCourse(id){ //update first technique
+    //Approach: update first
+    //update directly
+    //optionally get the updated document
+
+    //Course.update({isPublished: false}) //English update not published courses
+    const result = await Course.update({_id: id},{
+        $set: {
+            author: 'Ed',
+            isPublished: false
+        }
+    });
+    console.log(result);
+}
+
+async function updateMethodCourseDoc(id){
+    const result = await Course.findByIdAndUpdate(id,{
+        $set:{
+            author: 'Jason',
+            isPublished: false
+        }
+    },{new: true}) //need to pass another property {new: true} to return the updated document
+    console.log(result); //returns before the document that was updated
+}
+
+async function removeCourse(id){
+    const result = await Course.deleteOne({_id: id});
+    console.log(result);
+    //Course.deleteOne({isPublished:true}) //this will delete the first published document
+    //Course.deleteMany({_id: id}) //deletes many documents
+    //Course.findByIdAndRemove(id) //returns back the removed document
+}
+ 
+//removeCourse('5b2fc40468bfaf24a8a942e8');
+createCourse();
+
+
 
