@@ -2,6 +2,14 @@ const express = require('express');
 const app = express();
 const genreRoute = require('./routes/genre.js');
 
+const mongoose = require('mongoose');
+//connect to MongoDB 
+mongoose.connect('mongodb://localhost/vidly')
+    .then(() => console.log('connected to MongoDB...'))
+    .catch(err => console.error('could not connect to MongoDB'));
+
+   
+
 //middleware
 app.use(express.json()); //we have to do this to make genre.js run for the routes
 app.use('/api/genres',genreRoute);

@@ -1,14 +1,52 @@
 const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
+const mongoose = require('mongoose');
 
+
+//connect to MongoDB 
+mongoose.connect('mongodb://localhost/vidly')
+    .then(() => console.log('connected to MongoDB...'))
+    .catch(err => console.log(err.message));
+
+
+//create the Schema to be used
+const genreSchema = new mongoose.Schema({
+    genre: {type: String, trim:true, minlength: 3},
+    date: {type: Date, default: Date.now }
+});
+
+//created an object to start using DM action on it
+const Genre =  mongoose.model('genre',genreSchema);
 
 //vids held in memory
-var vids = [
+/* var vids = [
     { id: 1, "genre": "Action" },
     { id: 2, "genre": "Drama" },
     { id: 3, "genre": "Comedy" }
 ];
+ */
+
+ //Rewrote this so that it can be stored in the database (from the above array)
+
+async function createGenre(g){
+    const genre = new Genre({
+        genre: g
+    })
+    try{
+        const result = await genre.save();
+        console.log(result)
+    }
+    catch(err){
+        for (field in ex.errors)
+        console.log(ex.errors[field].message);
+    }
+}
+
+// createGenre('Action');
+// createGenre('Drama');
+// createGenre('Comedy');
+
 
 //helper function to help validate that if the genre is of the correct schema using Joi
 function validateGenre(genreParam){
@@ -33,6 +71,9 @@ router.get('/:id',(req,res) =>{
     //show the genre
     res.send(genre);
 });
+
+
+
 
 //Insert
 router.post('/',(req,res)=>{
