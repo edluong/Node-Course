@@ -63,4 +63,5 @@ function validateCustomers(customer){
 }
 
 
+module.exports = router;
 
