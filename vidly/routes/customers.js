@@ -34,21 +34,32 @@ router.get('/', async (req,res) => {
 });
 
 //get customer by id
-router.get('/:id', (req,res) =>{
-
-    //using Joi, validate the input from the body
-  
+router.get('/:id', async (req,res) =>{
 
     //in mongoose find the customer by the id
+    const customer = await Customer.findById(req.params.id);
     //return a response of 404 if not found
-
+    if(!customer) return res.status(404).send('Customer was not found by the supplied ID.');
     //send the response
+    res.send(customer);
 });
 
 //post a customer into the DB
 router.post('/',(req,res) =>{
     //validate the req from the body first using Joi
+    
 
+});
+
+
+//update
+router.put('/:id',(req,res) => {
+
+});
+
+
+//delete
+router.delete('/:id',(req,res) => {
 
 });
 
@@ -61,7 +72,6 @@ function validateCustomers(customer){
     }
     return Joi.validate(customer, schema);
 }
-
 
 module.exports = router;
 
