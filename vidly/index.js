@@ -14,7 +14,7 @@ mongoose.connect('mongodb://localhost/vidly')
 //middleware
 app.use(express.json()); //we have to do this to make genre.js run for the routes
 app.use('/api/genres',genreRoute);
-app.use('api/customers',customerRoute);
+app.use('/api/customers',customerRoute);
 app.use('/',express.static('public'));
 app.use('/static',express.static('public'));
 

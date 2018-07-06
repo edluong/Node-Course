@@ -45,10 +45,32 @@ router.get('/:id', async (req,res) =>{
 });
 
 //post a customer into the DB
-router.post('/',(req,res) =>{
-    //validate the req from the body first using Joi
+router.post('/', async (req,res) =>{
+    //validate the req from the body first using Joi and get the error
+    var {error} = validateCustomers(req.body);
     
+    //if there is a problem with the customer then send a response of 400 bad request
+    if(error) return res.status(400).send(error.details[0].message);
+    
+    //if there is no problem found, continue and create a new document from the body of the request
+    let customer = new Customer(
+        {
+            isGold: req.body.isGold,
+            name: req.body.name,
+            phone: req.body.phone
+        }
+    )
 
+    //try to insert the document into the DB
+    try{
+        customer = await customer.save();
+        res.send(customer);
+    }
+    catch(err){
+        for(field in err.errors){
+            console.log(err.errors[field].message);
+        }
+    }
 });
 
 
