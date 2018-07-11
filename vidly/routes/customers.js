@@ -35,7 +35,6 @@ router.get('/', async (req,res) => {
 
 //get customer by id
 router.get('/:id', async (req,res) =>{
-
     //in mongoose find the customer by the id
     const customer = await Customer.findById(req.params.id);
     //return a response of 404 if not found
@@ -75,14 +74,37 @@ router.post('/', async (req,res) =>{
 
 
 //update
-router.put('/:id',(req,res) => {
+router.put('/:id', async (req,res) => {
+    //validate the request we receive from the body using Joi
+    const {error} = validateCustomers(req.body);
+    //if there are any problems. send out a 400 response with the error message
+    if(error) return res.status(400).send(error.details[0].message);
 
+    //lookup the genre and update
+   const customer =  await Customer.findByIdAndUpdate(req.body.id, 
+        {
+            isGold: req.body.isGold,
+            name: req.body.name,
+            phone: req.body.phone,
+            new: true
+        }
+    ) 
+
+    //if customer is not found, send a status of 404
+    if(!customer) return res.status(404).send('Status 404: Customer is not found');
+
+    //send a response back of the customer
+    res.send(customer);
 });
 
 
 //delete
-router.delete('/:id',(req,res) => {
+router.delete('/:id',async (req,res) => {
+    const customer = await Customer.findByIdAndRemove(req.params.id);
 
+    if(!customer) return res.status(404).send('Customer was not found by the supplied ID.');
+
+    res.send(customer);
 });
 
 //validation function to check the input from the body

@@ -72,7 +72,7 @@ router.put('/:id', async (req,res) =>{
       if (error) return res.status(400).send(error.details[0].message);
     
     //look up the genre, send 404 if not found
-    const genre = await Genre.findByIdAndUpdate(req.params.id, {name: req.body.genre, new: true});
+    const genre = await Genre.findByIdAndUpdate(req.params.id, {name: req.body.genre, new: true}); //new: returns the new item added
     if(!genre) return res.status(404).send('Status:404 Genre is not available for the supplied ID.');
     
     //send the updated genre to the client
